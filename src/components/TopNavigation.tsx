@@ -1,40 +1,32 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import TopButtons from "./TopButtons";
+import { AppRoutes } from "./routes";
 
-interface Props {
-  //selectedPage: string;
-  //setActivePage: (page: string) => void;
-}
+const TopNavigation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-function TopNavigation() {
   const buttons = [
-    "Home",
-    "Über uns",
-    "Hintergrundbilder",
-    "Reiserouten",
-    "Impressum",
+    { label: "Home", path: AppRoutes.HomePage },
+    { label: "Über uns", path: AppRoutes.AboutPage },
+    { label: "Hintergrundbilder", path: AppRoutes.BackgroundsPage },
+    { label: "Reiserouten", path: AppRoutes.RoutesPage },
+    { label: "Impressum", path: AppRoutes.ImpressumPage },
   ];
 
   return (
-    <div
-      id="header"
-      className="flex justify-center items-center wx-full h-10 bg-green-900"
-    >
-      {/* 
-        Create TopButtons dynamically so we dont need to rewrite 
-        onClick and isActive for each button. Use .map beacuse .foreach 
-        does not return anything (returns undefined). 
-        Map returns an array which can be rendered.
-        */}
-      {buttons.map((buttonText) => (
+    <div className="flex justify-center items-center w-full h-10 bg-green-900">
+      {buttons.map((button) => (
         <TopButtons
-        //isActive={buttonText == selectedPage}
-        //onClick={() => setActivePage(buttonText)}
+          key={button.label}
+          isActive={location.pathname === button.path}
+          onClick={() => navigate(button.path)}
         >
-          {buttonText}
+          {button.label}
         </TopButtons>
       ))}
     </div>
   );
-}
+};
 
 export default TopNavigation;

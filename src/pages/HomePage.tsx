@@ -1,5 +1,9 @@
-import React from "react";
+import InteractiveSelector from "@/components/ui/interactive-selector";
 
 export default function HomePage() {
-  return <h1>Home</h1>;
+  return (
+    <div className="w-full h-full">
+      <InteractiveSelector />
+    </div>
+  );
 }

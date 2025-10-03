@@ -1,6 +1,3 @@
-import React from "react";
-
-export default function AboutPage() {
-  return <h1>About</h1>;
+export const AboutPage = () => {
+  return <h1>AboutPage</h1>;
 };
-
