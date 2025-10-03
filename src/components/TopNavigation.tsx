@@ -1,11 +1,11 @@
 import TopButtons from "./TopButtons";
 
 interface Props {
-  selectedPage: string;
-  setActivePage: (page: string) => void;
+  //selectedPage: string;
+  //setActivePage: (page: string) => void;
 }
 
-function TopNavigation({ selectedPage, setActivePage }: Props) {
+function TopNavigation() {
   const buttons = [
     "Home",
     "Über uns",
@@ -27,8 +27,8 @@ function TopNavigation({ selectedPage, setActivePage }: Props) {
         */}
       {buttons.map((buttonText) => (
         <TopButtons
-          isActive={buttonText == selectedPage}
-          onClick={() => setActivePage(buttonText)}
+        //isActive={buttonText == selectedPage}
+        //onClick={() => setActivePage(buttonText)}
         >
           {buttonText}
         </TopButtons>
