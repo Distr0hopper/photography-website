@@ -56,12 +56,12 @@ export default function HomePage() {
           <br />
           One Journey at a Time
         </h1>
-        <p className="flex items-center justify-center text-center py-4 pl-20 text-neutral-200 text-lg md:text-xl max-w-2xl">
-          See the advantures through my lens!
+        <p className="flex items-center justify-center text-center py-4 text-neutral-200 text-lg md:text-xl max-w-2xl ">
+          See the advantures through our eyes!
         </p>
         <div className="flex justify-center items-center">
           <Button className="py-5 px-5 backdrop-blur-sm border bg-emerald-300/10 border-emerald-500/20 text-white text-center rounded-full hover:bg-emerald-300/20">
-            <Link to={AppRoutes.BackgroundsPage}>Explore Pictures → </Link>
+            <Link to={AppRoutes.PicturePage}>Explore Pictures → </Link>
           </Button>
         </div>
       </div>

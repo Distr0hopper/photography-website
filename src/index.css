@@ -2,23 +2,3 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@layer components{
-    .blueButton {
-        @apply bg-blue-700 text-white hover:bg-blue-400 hover:text-white;
-    }
-}
-
-@layer utilities {
-    .blueButton {
-        background-color: rgb(29 78 216) !important;
-        color: white !important;
-    }
-    .blueButton:hover {
-        background-color: rgb(96 165 250) !important;
-        color: white !important;
-    }
-}
-
-@theme {
-    --color-chestnut: #973F29;
-}

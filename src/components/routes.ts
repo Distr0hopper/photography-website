@@ -1,7 +1,7 @@
 export const AppRoutes = {
     HomePage: "/",
     AboutPage: "/abouts",
-    BackgroundsPage: "/backgrounds",
+    PicturePage: "/pictures",
     RoutesPage: "/routes",
     ImpressumPage: "/impressum",
 };

@@ -16,10 +16,7 @@ function App() {
         <Routes>
           <Route path={AppRoutes.HomePage} element={<HomePage />} />
           <Route path={AppRoutes.AboutPage} element={<AboutPage />} />
-          <Route
-            path={AppRoutes.BackgroundsPage}
-            element={<BackgroundsPage />}
-          />
+          <Route path={AppRoutes.PicturePage} element={<BackgroundsPage />} />
           <Route path={AppRoutes.RoutesPage} element={<RoutesPage />} />
           <Route path={AppRoutes.ImpressumPage} element={<ImpressumPage />} />
           {/* Catch-All Route für 404*/}
