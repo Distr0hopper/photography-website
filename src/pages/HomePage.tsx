@@ -29,7 +29,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="overflow-hidden flex items-center justify-center h-screen">
+      <div className="overflow-hidden flex items-center justify-center h-screen bg-black/60">
         <AnimatePresence initial={false /* Dont run on first load! */}>
           <motion.img
             key={activeImage}
