@@ -11,11 +11,11 @@ const TopButtons = ({ children, isActive = false, onClick }: Props) => {
   return (
     <Button
       className={`
-        border-0 shadow-transparent transition-colors
+        border-0 shadow-transparent transition-colors h-full text-2xl mx-2
         ${
           isActive
-            ? "bg-green-800 text-white"
-            : "bg-green-900 text-white hover:bg-green-800 hover:text-white"
+            ? "bg-[#2f3e46] text-white hover:bg-gray-800"
+            : "bg-gray-900/0 text-white hover:bg-gray-800 hover:text-white"
         }
       `}
       onClick={onClick}

@@ -22,7 +22,6 @@ function App() {
           />
           <Route path={AppRoutes.RoutesPage} element={<RoutesPage />} />
           <Route path={AppRoutes.ImpressumPage} element={<ImpressumPage />} />
-
           {/* Catch-All Route für 404*/}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

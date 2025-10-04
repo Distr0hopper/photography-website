@@ -3,5 +3,5 @@ export const AppRoutes = {
     AboutPage: "/abouts",
     BackgroundsPage: "/backgrounds",
     RoutesPage: "/routes",
-    ImpressumPage: "/impressum"
+    ImpressumPage: "/impressum",
 };

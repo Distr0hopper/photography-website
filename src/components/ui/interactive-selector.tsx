@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   FaCampground,
   FaFire,
@@ -9,7 +9,7 @@ import {
 
 const InteractiveSelector = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [animatedOptions, setAnimatedOptions] = useState([]);
+  const [animatedOptions, setAnimatedOptions] = useState<number[]>([]);
 
   const options = [
     {
@@ -49,14 +49,14 @@ const InteractiveSelector = () => {
     },
   ];
 
-  const handleOptionClick = (index) => {
+  const handleOptionClick = (index: number) => {
     if (index !== activeIndex) {
       setActiveIndex(index);
     }
   };
 
   useEffect(() => {
-    const timers = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     options.forEach((_, i) => {
       const timer = setTimeout(() => {
@@ -85,7 +85,7 @@ const InteractiveSelector = () => {
       <div className="h-12"></div>
 
       {/* Options Container */}
-      <div className="options flex w-full max-w-[900px] min-w-[600px] h-[400px] mx-0 items-stretch overflow-hidden relative">
+      <div className="options flex w-full px-8 max-w-[2000px] min-w-[600px] h-[550px] mx-0 items-stretch overflow-hidden relative">
         {options.map((option, index) => (
           <div
             key={index}
@@ -177,7 +177,7 @@ const InteractiveSelector = () => {
       </div>
 
       {/* Custom animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes slideFadeIn {
           0% {
             opacity: 0;

@@ -8,14 +8,15 @@ const TopNavigation = () => {
 
   const buttons = [
     { label: "Home", path: AppRoutes.HomePage },
-    { label: "Über uns", path: AppRoutes.AboutPage },
-    { label: "Hintergrundbilder", path: AppRoutes.BackgroundsPage },
-    { label: "Reiserouten", path: AppRoutes.RoutesPage },
+    { label: "About us", path: AppRoutes.AboutPage },
+    { label: "Backgrounds", path: AppRoutes.BackgroundsPage },
+    { label: "Travel Routes", path: AppRoutes.RoutesPage },
     { label: "Impressum", path: AppRoutes.ImpressumPage },
   ];
 
   return (
-    <div className="flex justify-center items-center w-full h-10 bg-green-900">
+    // Top navigation with buttons that always stay on top of the page when scrolling
+    <header className="flex justify-center items-center sticky top-0 z-50 w-full p-2 bg-[#354f52]/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md">
       {buttons.map((button) => (
         <TopButtons
           key={button.label}
@@ -25,7 +26,7 @@ const TopNavigation = () => {
           {button.label}
         </TopButtons>
       ))}
-    </div>
+    </header>
   );
 };
 
