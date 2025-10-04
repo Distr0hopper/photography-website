@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { AppRoutes } from "@/components/routes";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import type { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function HomePage() {
   const heroImages = [
@@ -16,6 +18,7 @@ export default function HomePage() {
     return currentIndex >= heroImages.length ? 0 : currentIndex;
   }
 
+  // Change image every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveImage(getNewIndex(activeImage + 1));
@@ -26,12 +29,18 @@ export default function HomePage() {
 
   return (
     <>
-      <div
-        className="overflow-hidden flex items-center justify-center h-screen"
-        style={{
-          backgroundImage: `url('${heroImages[activeImage]}')`,
-        }}
-      >
+      <div className="overflow-hidden flex items-center justify-center h-screen">
+        <AnimatePresence initial={false /* Dont run on first load! */}>
+          <motion.img
+            key={activeImage}
+            src={heroImages[activeImage]}
+            initial={{ y: "100%" }}
+            animate={{ y: 0, z: 0 }}
+            exit={{ y: "-150%" }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-50"
+          />
+        </AnimatePresence>
         <div>
           <h1 className="font-bold text-4xl md:text-6xl lg:text-7xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
             Capturing the World
