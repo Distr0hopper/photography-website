@@ -1,9 +1,10 @@
 <script lang="ts">
-	import {page} from '$app/state';
+	import { page } from '$app/state';
 
 	let navItems = [
 		{ name: 'Home', path: '/' },
 		{ name: 'Pictures', path: '/pictures' },
+		{ name: 'Destinations', path: '/destinations' },
 		{ name: 'About', path: '/about' }
 	];
 </script>
@@ -14,17 +15,17 @@
 	</div>
 
 	<div class="flex space-x-6">
-			{#each navItems as item}
-				<a
-					href={item.path}
-					class="transition-colors { page.url.pathname === item.path
-          ? 'text-emerald-400 font-semibold'
-          : 'text-white hover:text-emerald-300' }"
-				>
-					{item.name}
-				</a>
-			{/each}
+		{#each navItems as item}
+			<a
+				href={item.path}
+				class="transition-colors {page.url.pathname === item.path
+					? 'font-semibold text-emerald-400'
+					: 'text-white hover:text-emerald-300'}"
+			>
+				{item.name}
+			</a>
+		{/each}
 	</div>
 
-	<div class="flex-1 invisible md:visible"></div>
+	<div class="invisible flex-1 md:visible"></div>
 </nav>
