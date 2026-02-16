@@ -11,17 +11,17 @@
 	/>
 
 	<TravelCard
-		title="Italy"
-		description="Exploring the rich history  and vibrant culture of Italy, from Rome to Venice."
+		title="Marocco"
+		description="Exploring the rich history  and vibrant culture of Marocco, from Rome to Venice."
 		imageUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
-		slug="italy"
+		slug="marocco"
 	/>
 
 	<TravelCard
-		title="Japan"
+		title="Lofoten Islands"
 		description="A journey through Japan's blend of tradition and modernity, from Tokyo to Kyoto."
 		imageUrl="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=800"
-		slug="japan"
+		slug="lofoten-islands"
 	/>
 </div>
 
