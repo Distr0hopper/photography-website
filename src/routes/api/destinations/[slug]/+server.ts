@@ -1,7 +1,7 @@
-import { error } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 import { getDestinationBySlug, getPageContent } from '$lib/api/notion';
 
-export async function load({ params }) {
+export async function GET({ params }) {
 	const destination = await getDestinationBySlug(params.slug);
 
 	if (!destination) {
@@ -9,6 +9,5 @@ export async function load({ params }) {
 	}
 
 	const content = await getPageContent(destination.id);
-
-	return { destination, content };
+	return json({ destination, content });
 }

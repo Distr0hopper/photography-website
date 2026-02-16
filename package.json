@@ -35,6 +35,7 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
-		"@notionhq/client": "^5.9.0"
+		"@notionhq/client": "^5.9.0",
+		"@tanstack/svelte-query": "^6.0.18"
 	}
 }
