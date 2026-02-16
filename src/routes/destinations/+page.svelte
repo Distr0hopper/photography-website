@@ -1,29 +1,28 @@
 <script lang="ts">
 	import TravelCard from '$lib/components/common/TravelCard.svelte';
-	import { createQuery } from '@tanstack/svelte-query';
-	import type { Destination } from '$lib/api/notion';
-
-	const destinations = createQuery<Destination[]>(() => ({
-		queryKey: ['destinations'],
-		queryFn: () => fetch('/api/destinations').then((r) => r.json())
-	}));
 </script>
 
-<div class="container mx-auto flex flex-wrap gap-4 p-4">
-	{#if destinations.isPending}
-		<p class="text-neutral-400">Loading destinations...</p>
-	{:else if destinations.isError}
-		<p class="text-red-400">Failed to load destinations.</p>
-	{:else if destinations.data.length === 0}
-		<p class="text-neutral-400">No destinations found.</p>
-	{:else}
-		{#each destinations.data as destination}
-			<TravelCard
-				title={destination.name}
-				description="{destination.nights ? `${destination.nights} nights` : ''}{destination.transport ? ` · ${destination.transport}` : ''}"
-				imageUrl="https://images.unsplash.com/photo-1528127269322-539801943592?w=800"
-				slug={destination.slug}
-			/>
-		{/each}
-	{/if}
+<div class="container mx-auto flex p-4">
+	<TravelCard
+		title="Vietnam"
+		description="Our travel route through Vietnam, from the bustling cities to the serene countryside."
+		imageUrl="https://images.unsplash.com/photo-1528127269322-539801943592?w=800"
+		slug="vietnam"
+	/>
+
+	<TravelCard
+		title="Marocco"
+		description="Exploring the rich history  and vibrant culture of Marocco, from Rome to Venice."
+		imageUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
+		slug="marocco"
+	/>
+
+	<TravelCard
+		title="Lofoten Islands"
+		description="A journey through Japan's blend of tradition and modernity, from Tokyo to Kyoto."
+		imageUrl="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=800"
+		slug="lofoten-islands"
+	/>
 </div>
+
+<!-- Only 3 TravelCards in a Row! -->

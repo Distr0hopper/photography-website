@@ -1,8 +1,19 @@
 import { Client } from '@notionhq/client';
-import { NOTION_API_KEY, NOTION_DATABASE_ID } from '$env/static/private';
+import { NOTION_API_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { BlockObjectResponse, PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 const notion = new Client({ auth: NOTION_API_KEY });
+
+const destinationDbIds: Record<string, string | undefined> = {
+	vietnam: env.NOTION_DATABASE_ID_VIETNAM,
+	marocco: env.NOTION_DATABASE_ID_MAROCCO,
+	'lofoten-islands': env.NOTION_DATABASE_ID_LOFOTEN_ISLANDS
+};
+
+export function getDatabaseId(destination: string): string | null {
+	return destinationDbIds[destination] || null;
+}
 
 export type Destination = {
 	id: string;
@@ -85,9 +96,9 @@ function mapPageToDestination(page: PageObjectResponse): Destination {
 	};
 }
 
-export async function getDestinations(): Promise<Destination[]> {
+export async function getDestinations(databaseId: string): Promise<Destination[]> {
 	const response = await notion.dataSources.query({
-		data_source_id: NOTION_DATABASE_ID,
+		data_source_id: databaseId,
 		sorts: [{ property: 'Nr', direction: 'ascending' }]
 	});
 
@@ -96,8 +107,8 @@ export async function getDestinations(): Promise<Destination[]> {
 		.map(mapPageToDestination);
 }
 
-export async function getDestinationBySlug(slug: string): Promise<Destination | null> {
-	const destinations = await getDestinations();
+export async function getDestinationBySlug(databaseId: string, slug: string): Promise<Destination | null> {
+	const destinations = await getDestinations(databaseId);
 	return destinations.find((d) => d.slug === slug) ?? null;
 }
 

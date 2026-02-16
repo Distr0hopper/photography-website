@@ -5,8 +5,8 @@
 	let { data } = $props();
 
 	const query = createQuery<{ destination: Destination; content: NotionBlock[] }>(() => ({
-		queryKey: ['destination', data.slug],
-		queryFn: () => fetch(`/api/destinations/${data.slug}`).then((r) => r.json())
+		queryKey: ['destination', data.destination, data.slug],
+		queryFn: () => fetch(`/api/destinations/${data.destination}/${data.slug}`).then((r) => r.json())
 	}));
 </script>
 
@@ -24,12 +24,16 @@
 
 	<div class="container mx-auto max-w-3xl px-4 py-12">
 		<header class="mb-8">
-			<h1 class="text-4xl font-bold text-neutral-100">{destination.name}</h1>
+			<h1 class="text-4xl font-bold">{destination.name}</h1>
 
 			<div class="mt-4 flex flex-wrap gap-4 text-sm text-neutral-400">
 				{#if destination.startDate}
 					<span>
-						{new Date(destination.startDate).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}
+						{new Date(destination.startDate).toLocaleDateString('de-DE', {
+							day: 'numeric',
+							month: 'long',
+							year: 'numeric'
+						})}
 					</span>
 				{/if}
 				{#if destination.nights}
