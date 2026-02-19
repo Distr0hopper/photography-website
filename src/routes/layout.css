@@ -139,7 +139,11 @@
 	}
 
 	p {
-		@apply leading-7;
+		@apply leading-7 break-words;
+	}
+
+	a {
+		@apply break-words text-emerald-400 hover:text-emerald-300;
 	}
 
 	ul {

@@ -112,6 +112,41 @@ export async function getDestinationBySlug(databaseId: string, slug: string): Pr
 	return destinations.find((d) => d.slug === slug) ?? null;
 }
 
+function escapeHtml(text: string): string {
+	return text
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
+}
+
+function richTextToHtml(richText: any[]): string {
+	return richText
+		.map((t) => {
+			let html = escapeHtml(t.plain_text);
+			if (t.annotations?.code) html = `<code>${html}</code>`;
+			if (t.annotations?.bold) html = `<strong>${html}</strong>`;
+			if (t.annotations?.italic) html = `<em>${html}</em>`;
+			if (t.annotations?.strikethrough) html = `<s>${html}</s>`;
+			if (t.annotations?.underline) html = `<u>${html}</u>`;
+			if (t.href) {
+			// When Notion stores a raw URL as both the href and the display text,
+			// show just the hostname instead of the full URL.
+			const isRawUrl = t.plain_text === t.href || t.plain_text.startsWith('http');
+			if (isRawUrl) {
+				try {
+					html = new URL(t.href).hostname;
+				} catch {
+					// malformed URL — keep the original text
+				}
+			}
+			html = `<a href="${escapeHtml(t.href)}" target="_blank" rel="noopener noreferrer">${html}</a>`;
+		}
+			return html;
+		})
+		.join('');
+}
+
 function extractBlockText(block: BlockObjectResponse): NotionBlock | null {
 	const type = block.type;
 
@@ -124,27 +159,33 @@ function extractBlockText(block: BlockObjectResponse): NotionBlock | null {
 		type === 'callout'
 	) {
 		const content = (block as any)[type];
-		const text = content.rich_text?.map((t: any) => t.plain_text).join('') ?? '';
+		const text = richTextToHtml(content.rich_text ?? []);
 		if (!text) return null;
 		return { type, text };
 	}
 
 	if (type === 'bulleted_list_item' || type === 'numbered_list_item') {
 		const content = (block as any)[type];
-		const text = content.rich_text?.map((t: any) => t.plain_text).join('') ?? '';
+		const text = richTextToHtml(content.rich_text ?? []);
 		return { type, text };
 	}
 
 	if (type === 'image') {
 		const image = (block as any).image;
 		const url = image.type === 'external' ? image.external.url : image.file.url;
-		const caption = image.caption?.map((t: any) => t.plain_text).join('') ?? '';
+		const caption = richTextToHtml(image.caption ?? []);
 		return { type: 'image', url, text: caption };
+	}
+
+	if (type === 'bookmark') {
+		const { url, caption } = (block as any).bookmark;
+		const text = richTextToHtml(caption ?? []) || escapeHtml(url);
+		return { type: 'bookmark', url, text };
 	}
 
 	if (type === 'code') {
 		const code = (block as any).code;
-		const text = code.rich_text?.map((t: any) => t.plain_text).join('') ?? '';
+		const text = code.rich_text?.map((t: any) => escapeHtml(t.plain_text)).join('') ?? '';
 		return { type: 'code', text, language: code.language };
 	}
 
