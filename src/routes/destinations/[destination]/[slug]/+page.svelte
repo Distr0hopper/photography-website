@@ -6,7 +6,7 @@
 
 	const query = createQuery<{ destination: Destination; content: NotionBlock[] }>(() => ({
 		queryKey: ['destination', data.destination, data.slug],
-		queryFn: () => fetch(`/api/destinations/${data.destination}/${data.slug}`).then((r) => r.json())
+		queryFn: () => fetch(`/destinations/${data.destination}/${data.slug}`).then((r) => r.json())
 	}));
 </script>
 
@@ -53,6 +53,7 @@
 			<div class="prose prose-invert max-w-none">
 				{#each content as block}
 					{#if block.type === 'heading_1'}
+						{console.log(block)}
 						<h1>{block.text}</h1>
 					{:else if block.type === 'heading_2'}
 						<h2>{block.text}</h2>

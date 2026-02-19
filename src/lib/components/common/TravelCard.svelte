@@ -22,7 +22,7 @@
 	<img
 		src={imageUrl ?? 'https://avatar.vercel.sh/shadcn1'}
 		alt="Travel destination"
-		class="relative z-20 aspect-video w-full object-cover brightness-90 dark:brightness-80"
+		class="relative z-20 aspect-video w-full object-cover brightness-95 dark:brightness-95"
 	/>
 	<CardHeader>
 		<CardAction></CardAction>

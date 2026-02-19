@@ -7,7 +7,7 @@
 
 	const destinations = createQuery<Destination[]>(() => ({
 		queryKey: ['destinations', data.destination],
-		queryFn: () => fetch(`/api/destinations/${data.destination}`).then((r) => r.json())
+		queryFn: () => fetch(`/destinations/${data.destination}`).then((r) => r.json())
 	}));
 </script>
 

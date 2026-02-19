@@ -5,7 +5,7 @@ export const load: PageLoad = async ({ parent, fetch, params }) => {
 
 	await queryClient.prefetchQuery({
 		queryKey: ['destinations', params.destination],
-		queryFn: () => fetch(`/api/destinations/${params.destination}`).then((r) => r.json())
+		queryFn: () => fetch(`/destinations/${params.destination}`).then((r) => r.json())
 	});
 
 	return { destination: params.destination };
