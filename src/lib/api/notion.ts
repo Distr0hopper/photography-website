@@ -63,6 +63,10 @@ function getNumber(page: PageObjectResponse, key: string): number | null {
 function getDate(page: PageObjectResponse, key: string): string | null {
 	const prop = page.properties[key];
 	if (prop?.type === 'date' && prop.date) return prop.date.start;
+	// Formula fields that evaluate to a date
+	if (prop?.type === 'formula' && prop.formula.type === 'date' && prop.formula.date) {
+		return prop.formula.date.start;
+	}
 	return null;
 }
 
@@ -81,18 +85,25 @@ function getSelect(page: PageObjectResponse, key: string): string | null {
 	return null;
 }
 
+function getPlace(page: PageObjectResponse, key: string): string | null {
+	const prop = (page.properties as any)[key];
+	if (prop?.type === 'place' && prop.place?.name) return prop.place.name;
+	return null;
+}
+
 function mapPageToDestination(page: PageObjectResponse): Destination {
 	const name = getTitle(page);
+
 	return {
 		id: page.id,
 		slug: slugify(name),
 		name,
 		nr: getNumber(page, 'Nr'),
-		startDate: getDate(page, 'Reisestart'),
+		startDate: getDate(page, 'Startdatum'),
 		nights: getNumber(page, 'Nächte'),
 		transport: getSelect(page, 'Transport'),
 		departure: getRichText(page, 'Abreise'),
-		place: getRichText(page, 'Place')
+		place: getPlace(page, 'Place')
 	};
 }
 
