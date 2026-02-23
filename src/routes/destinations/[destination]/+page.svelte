@@ -41,6 +41,16 @@
 	type View = 'list' | 'map';
 	let activeView = $state<View>('list');
 
+	// Determine which stop is currently active (latest stop whose startDate <= today)
+	const activeSlug = $derived.by(() => {
+		const data = destinations.data;
+		if (!data) return null;
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const past = data.filter((d) => d.startDate && new Date(d.startDate) <= today);
+		return past.length > 0 ? past[past.length - 1].slug : null;
+	});
+
 	// Carousel state
 	let scrollContainer = $state<HTMLElement | null>(null);
 	let canScrollLeft = $state(false);
@@ -258,7 +268,9 @@
 									: ''}{destination.transport ? ` · ${destination.transport}` : ''}"
 								imageUrl={meta.heroImage}
 								slug="{data.destination}/{destination.slug}"
-								aspectRatio="aspect-4/4"
+								aspectRatio="aspect-3/4"
+								startDate={destination.startDate}
+								isActive={destination.slug === activeSlug}
 							/>
 						</div>
 					{/each}
