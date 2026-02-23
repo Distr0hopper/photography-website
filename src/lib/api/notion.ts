@@ -25,6 +25,8 @@ export type Destination = {
 	transport: string | null;
 	departure: string | null;
 	place: string | null;
+	lat: number | null;
+	lon: number | null;
 };
 
 export type NotionBlock = {
@@ -85,14 +87,24 @@ function getSelect(page: PageObjectResponse, key: string): string | null {
 	return null;
 }
 
-function getPlace(page: PageObjectResponse, key: string): string | null {
+function getPlace(
+	page: PageObjectResponse,
+	key: string
+): { name: string | null; lat: number | null; lon: number | null } {
 	const prop = (page.properties as any)[key];
-	if (prop?.type === 'place' && prop.place?.name) return prop.place.name;
-	return null;
+	if (prop?.type === 'place' && prop.place) {
+		return {
+			name: prop.place.name ?? null,
+			lat: typeof prop.place.lat === 'number' ? prop.place.lat : null,
+			lon: typeof prop.place.lon === 'number' ? prop.place.lon : null
+		};
+	}
+	return { name: null, lat: null, lon: null };
 }
 
 function mapPageToDestination(page: PageObjectResponse): Destination {
 	const name = getTitle(page);
+	const placeData = getPlace(page, 'Place');
 
 	return {
 		id: page.id,
@@ -103,7 +115,9 @@ function mapPageToDestination(page: PageObjectResponse): Destination {
 		nights: getNumber(page, 'Nächte'),
 		transport: getSelect(page, 'Transport'),
 		departure: getRichText(page, 'Abreise'),
-		place: getPlace(page, 'Place')
+		place: placeData.name,
+		lat: placeData.lat,
+		lon: placeData.lon
 	};
 }
 

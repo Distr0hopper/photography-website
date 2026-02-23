@@ -1,5 +1,6 @@
 <script lang="ts">
 	import TravelCard from '$lib/components/common/TravelCard.svelte';
+	import MapView from '$lib/components/common/MapView.svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 	import type { Destination } from '$lib/api/notion';
 
@@ -36,12 +37,16 @@
 		queryFn: () => fetch(`/destinations/${data.destination}`).then((r) => r.json())
 	}));
 
+	// View toggle
+	type View = 'list' | 'map';
+	let activeView = $state<View>('list');
+
 	// Carousel state
 	let scrollContainer = $state<HTMLElement | null>(null);
 	let canScrollLeft = $state(false);
 	let canScrollRight = $state(true);
 
-	const CARD_WIDTH = 304; // px — w-72 (288) + gap-4 (16)
+	const CARD_WIDTH = 456; // px — w-110 (440) + gap-4 (16)
 
 	function scroll(dir: 'left' | 'right') {
 		scrollContainer?.scrollBy({
@@ -59,7 +64,7 @@
 </script>
 
 <!-- Hero banner -->
-<div class="relative h-72 overflow-hidden md:h-96">
+<div class="relative h-50 md:h-45">
 	<img src={meta.heroImage} alt={meta.name} class="h-full w-full object-cover" />
 	<div class="absolute inset-0 bg-linear-to-b from-black/20 via-black/40 to-black/85"></div>
 
@@ -91,14 +96,13 @@
 	</div>
 </div>
 
-<!-- Carousel section -->
-<div class="min-h-screen bg-neutral-950 p-5 py-16">
+<!-- Content section -->
+<div class="min-h-screen bg-neutral-950 py-16">
 	{#if destinations.isPending}
-		<!-- Skeleton -->
 		<div class="flex gap-4 overflow-hidden px-6 md:px-12">
 			{#each Array(4) as _}
 				<div class="w-72 shrink-0">
-					<div class="aspect-4/3 animate-pulse rounded-2xl bg-neutral-800"></div>
+					<div class="aspect-3/4 animate-pulse rounded-2xl bg-neutral-800"></div>
 				</div>
 			{/each}
 		</div>
@@ -111,91 +115,162 @@
 			<p class="text-neutral-400">No stops found for this destination.</p>
 		</div>
 	{:else}
-		<!-- Header row -->
+		<!-- Header row: stop count + view toggle + carousel nav -->
 		<div class="mb-8 flex items-center justify-between px-6 md:px-12">
 			<div class="flex items-center gap-3">
 				<h2 class="text-lg font-semibold text-white" style="padding-bottom: 0;">
 					{destinations.data.length}
 					{destinations.data.length === 1 ? 'Stop' : 'Stops'}
 				</h2>
-				<span class="text-sm text-neutral-600">— scroll to explore</span>
+				{#if activeView === 'list'}
+					<span class="text-sm text-neutral-600">— scroll to explore</span>
+				{/if}
 			</div>
 
-			<!-- Nav buttons -->
-			<div class="flex gap-2">
-				<button
-					onclick={() => scroll('left')}
-					disabled={!canScrollLeft}
-					class="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
-					aria-label="Scroll left"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
+			<div class="flex items-center gap-3">
+				<!-- View toggle pill -->
+				<div class="flex rounded-full border border-white/10 bg-white/5 p-1">
+					<button
+						onclick={() => (activeView = 'list')}
+						class="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all {activeView ===
+						'list'
+							? 'bg-white/10 text-white'
+							: 'text-neutral-500 hover:text-neutral-300'}"
 					>
-						<path d="m15 18-6-6 6-6" />
-					</svg>
-				</button>
-				<button
-					onclick={() => scroll('right')}
-					disabled={!canScrollRight}
-					class="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
-					aria-label="Scroll right"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="13"
+							height="13"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<rect width="7" height="7" x="3" y="3" rx="1" /><rect
+								width="7"
+								height="7"
+								x="14"
+								y="3"
+								rx="1"
+							/><rect width="7" height="7" x="14" y="14" rx="1" /><rect
+								width="7"
+								height="7"
+								x="3"
+								y="14"
+								rx="1"
+							/>
+						</svg>
+						List
+					</button>
+					<button
+						onclick={() => (activeView = 'map')}
+						class="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all {activeView ===
+						'map'
+							? 'bg-white/10 text-white'
+							: 'text-neutral-500 hover:text-neutral-300'}"
 					>
-						<path d="m9 18 6-6-6-6" />
-					</svg>
-				</button>
-			</div>
-		</div>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="13"
+							height="13"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /><line
+								x1="9"
+								x2="9"
+								y1="3"
+								y2="18"
+							/><line x1="15" x2="15" y1="6" y2="21" />
+						</svg>
+						Map
+					</button>
+				</div>
 
-		<!-- Carousel track wrapper (clips fade gradient) -->
-		<div class="relative">
-			<!-- Right fade hint -->
-			<div
-				class="pointer-events-none absolute top-0 right-0 z-10 h-full w-24 bg-linear-to-l from-neutral-950 to-transparent"
-			></div>
-
-			<!-- Scrollable track -->
-			<div
-				bind:this={scrollContainer}
-				onscroll={onScroll}
-				class="flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 md:px-12"
-				style="scrollbar-width: none; -webkit-overflow-scrolling: touch;"
-			>
-				{#each destinations.data as destination}
-					<div class="w-72 shrink-0 snap-start md:w-80">
-						<TravelCard
-							title={destination.name}
-							description="{destination.nights
-								? `${destination.nights} nights`
-								: ''}{destination.transport ? ` · ${destination.transport}` : ''}"
-							imageUrl={meta.heroImage}
-							slug="{data.destination}/{destination.slug}"
-						/>
+				<!-- Carousel nav (only shown in list view) -->
+				{#if activeView === 'list'}
+					<div class="flex gap-2">
+						<button
+							onclick={() => scroll('left')}
+							disabled={!canScrollLeft}
+							class="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+							aria-label="Scroll left"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg
+							>
+						</button>
+						<button
+							onclick={() => scroll('right')}
+							disabled={!canScrollRight}
+							class="flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+							aria-label="Scroll right"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg
+							>
+						</button>
 					</div>
-				{/each}
-
-				<!-- Right padding spacer so last card isn't hidden under gradient -->
-				<div class="w-16 shrink-0"></div>
+				{/if}
 			</div>
 		</div>
+
+		<!-- List view: carousel -->
+		{#if activeView === 'list'}
+			<div class="relative">
+				<div
+					class="pointer-events-none absolute top-0 right-0 z-10 h-full w-24 bg-linear-to-l from-neutral-950 to-transparent"
+				></div>
+				<div
+					bind:this={scrollContainer}
+					onscroll={onScroll}
+					class="flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 md:px-12"
+					style="scrollbar-width: none; -webkit-overflow-scrolling: touch;"
+				>
+					{#each destinations.data as destination}
+						<div class="w-[78vw] shrink-0 snap-start sm:w-96 lg:w-110">
+							<TravelCard
+								title={destination.name}
+								description="{destination.nights
+									? `${destination.nights} nights`
+									: ''}{destination.transport ? ` · ${destination.transport}` : ''}"
+								imageUrl={meta.heroImage}
+								slug="{data.destination}/{destination.slug}"
+								aspectRatio="aspect-4/4"
+							/>
+						</div>
+					{/each}
+					<div class="w-16 shrink-0"></div>
+				</div>
+			</div>
+
+			<!-- Map view -->
+		{:else}
+			<div class="px-6 md:px-12">
+				<MapView destinations={destinations.data} destinationBase={data.destination} />
+			</div>
+		{/if}
 	{/if}
 </div>

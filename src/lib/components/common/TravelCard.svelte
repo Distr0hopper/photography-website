@@ -4,9 +4,10 @@
 		description: string;
 		imageUrl: string;
 		slug?: string;
+		aspectRatio?: string;
 	}
 
-	let { title, description, imageUrl, slug }: Props = $props();
+	let { title, description, imageUrl, slug, aspectRatio = 'aspect-4/3' }: Props = $props();
 </script>
 
 <a
@@ -14,7 +15,7 @@
 	class="group relative block overflow-hidden rounded-2xl w-full"
 	style="text-decoration: none;"
 >
-	<div class="aspect-4/3 overflow-hidden">
+	<div class="{aspectRatio} overflow-hidden">
 		<img
 			src={imageUrl ?? 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80'}
 			alt={title}
