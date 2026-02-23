@@ -20,14 +20,18 @@
 	}: Props = $props();
 
 	function formatDate(dateStr: string): string {
-		return new Date(dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+		return new Date(dateStr).toLocaleDateString('en-US', {
+			day: 'numeric',
+			month: 'short',
+			year: 'numeric'
+		});
 	}
 </script>
 
 <a
 	href="/destinations/{slug ?? title.toLowerCase()}"
 	class="group relative block w-full overflow-hidden rounded-2xl {isActive
-		? 'ring-2 ring-emerald-400/70 shadow-[0_0_28px_rgba(52,211,153,0.22)]'
+		? 'shadow-[0_0_28px_rgba(52,211,153,0.22)] ring-2 ring-emerald-400/70'
 		: ''}"
 	style="text-decoration: none;"
 >
@@ -63,9 +67,9 @@
 	</div>
 
 	<!-- Card content -->
-	<div class="absolute bottom-0 left-0 right-0 p-5">
+	<div class="absolute right-0 bottom-0 left-0 p-5">
 		{#if startDate}
-			<p class="mb-1.5 text-xs font-medium text-neutral-500">{formatDate(startDate)}</p>
+			<p class="text-m mb-1.5 font-medium text-neutral-400">{formatDate(startDate)}</p>
 		{/if}
 		<h3 class="text-xl font-bold tracking-tight text-white">{title}</h3>
 		{#if description}

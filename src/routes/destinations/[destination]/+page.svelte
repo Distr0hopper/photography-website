@@ -268,7 +268,7 @@
 									: ''}{destination.transport ? ` · ${destination.transport}` : ''}"
 								imageUrl={meta.heroImage}
 								slug="{data.destination}/{destination.slug}"
-								aspectRatio="aspect-3/4"
+								aspectRatio="aspect-4/4"
 								startDate={destination.startDate}
 								isActive={destination.slug === activeSlug}
 							/>
