@@ -1,15 +1,17 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { page } from '$app/state';
 
 	interface Props {
 		title: string;
 		description: string;
 		imageUrl: string;
 		showBadge?: boolean;
+		redirectUri?: string;
 	}
 
-	let { title, description, imageUrl, showBadge = false }: Props = $props();
+	let { title, description, imageUrl, showBadge = false, redirectUri }: Props = $props();
 </script>
 
 <Card.Root class="relative mx-auto w-full max-w-sm pt-0">
@@ -32,6 +34,6 @@
 		<Card.Description>{description ?? 'Description'}</Card.Description>
 	</Card.Header>
 	<Card.Footer>
-		<Button class="w-full">Visit Destination</Button>
+		<Button class="w-full" href={page.url.pathname + '/' + redirectUri}>Visit Destination</Button>
 	</Card.Footer>
 </Card.Root>
