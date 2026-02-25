@@ -1,17 +1,25 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import TravelCard from '$lib/components/common/TravelCard.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	let { data } = $props();
-	console.log('Notion data:', data.notionData);
+	$inspect(data.notionData);
 	let pageId = page.params.destination;
 </script>
 
 <div>Visiting subpage of {pageId}</div>
-<pre>{JSON.stringify(data.notionData, null, 2)}</pre>
-{#if pageId == 'vietnam'}
-	<Button href={page.url.pathname + '/ho-chi-minh'}>Ho Chi Minh</Button>
-	<Button href={page.url.pathname + '/can-tho'}>Can Tho</Button>
-{:else if pageId == 'marocco'}
-	<Button>Fez</Button>
-{/if}
+<div class="grid grid-cols-5 gap-5">
+	{#if data.destination == 'vietnam'}
+		{#each data.notionData as location}
+			<TravelCard
+				title="Platzhalter"
+				description="Platzhalter"
+				imageUrl={location.cover?.external?.url}
+				redirectUri={'title'}
+			></TravelCard>
+		{/each}
+	{:else if data.destination == 'marocco'}
+		<Button>Fez</Button>
+	{/if}
+</div>
