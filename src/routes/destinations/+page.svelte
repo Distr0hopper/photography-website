@@ -1,5 +1,6 @@
 <script lang="ts">
 	import TravelCard from '$lib/components/common/TravelCard.svelte';
+	import { slugify } from '$lib/common';
 	const travelDestinations = [
 		{
 			title: 'Vietnam',
@@ -18,12 +19,6 @@
 			imageUrl: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=800'
 		}
 	];
-
-	function slugify(title: string) {
-		let slug = title.toLocaleLowerCase();
-		slug = slug.replace(/\s/g, '-');
-		return slug;
-	}
 </script>
 
 <div class="container mx-auto flex p-4">

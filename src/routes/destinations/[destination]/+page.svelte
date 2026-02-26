@@ -4,19 +4,19 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	let { data } = $props();
-	$inspect(data.notionData);
+	$inspect(data.locations);
 	let pageId = page.params.destination;
 </script>
 
-<div>Visiting subpage of {pageId}</div>
-<div class="grid grid-cols-5 gap-5">
+<div class="flex items-center justify-center p-3">Visiting subpage of {pageId}</div>
+<div class="grid grid-cols-4 gap-5">
 	{#if data.destination == 'vietnam'}
-		{#each data.notionData as location}
+		{#each data.locations as location}
 			<TravelCard
-				title="Platzhalter"
+				title={location.title}
 				description="Platzhalter"
-				imageUrl={location.cover?.external?.url}
-				redirectUri={'title'}
+				imageUrl={location.imageUrl}
+				redirectUri={location.slug}
 			></TravelCard>
 		{/each}
 	{:else if data.destination == 'marocco'}
